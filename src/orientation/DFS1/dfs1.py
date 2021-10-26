@@ -18,7 +18,7 @@ def dfs1(graph, v, height, parent_edge, adj_list, low_pt, low_pt_2, nesting_dept
         if height[w] == math.inf:
             parent_edge[w] = (v, w)
             height[w] = height[v] + 1
-            dfs1(graph, w, height, parent_edge, adj_list, low_pt, low_pt_2)
+            dfs1(graph, w, height, parent_edge, adj_list, low_pt, low_pt_2, nesting_depth)
         else:
             low_pt[(v, w)] = height[w]
 
@@ -26,7 +26,7 @@ def dfs1(graph, v, height, parent_edge, adj_list, low_pt, low_pt_2, nesting_dept
         if low_pt_2[(v, w)] < height[v]:
             nesting_depth[(v, w)] = nesting_depth[(v, w)] + 1
 
-        if e != math.nan:
+        if not check_for_nan_tuple(e):
             if low_pt[(v, w)] < low_pt[e]:
                 low_pt_2[e] = min(low_pt[e], low_pt_2[v, w])
                 low_pt[e] = low_pt[(v, w)]
@@ -34,7 +34,6 @@ def dfs1(graph, v, height, parent_edge, adj_list, low_pt, low_pt_2, nesting_dept
                 low_pt_2[e] = min(low_pt_2[e], low_pt[(v, w)])
             else:
                 low_pt_2[e] = min(low_pt_2[e], low_pt_2[(v, w)])
-
 
 
     # TODO: Wie orientiere ich eine edge? Idee: mit list_of_edges aus run.py abgleichen

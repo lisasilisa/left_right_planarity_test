@@ -18,7 +18,7 @@ def main():
     number_of_edges = graph.number_of_edges()
     height = dict.fromkeys(graph.nodes, math.inf)
     roots = []
-    parent_edge = dict.fromkeys(graph.nodes, math.nan)
+    parent_edge = dict.fromkeys(graph.nodes, (math.nan, math.nan))
     low_pt = {}
     low_pt_2 = {}
     nesting_depth = {}
@@ -29,6 +29,7 @@ def main():
         print('PLANAR')
 
     orientate(graph, height, roots, parent_edge, low_pt, low_pt_2, nesting_depth)
+    print('nesting depth:', nesting_depth)
 
 
 if __name__ == "__main__":
