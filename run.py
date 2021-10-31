@@ -6,19 +6,19 @@ from src.orientation.orientation import *
 
 
 def main():
-    graph = nx.Graph()
+    graph = nx.MultiGraph()
+    # graph.add_nodes_from([1, 2, 3, 4, 5])
+    # graph.add_edges_from([(1, 2), (2, 3), (2, 5), (3, 4), (3, 5)])
     graph.add_nodes_from([1, 2, 3, 4, 5])
-    graph.add_edges_from([(1, 2), (2, 3), (2, 5), (3, 4), (3, 5)])
+    graph.add_edges_from([(1,2,0), (2,3,0), (3,4,0), (4,5,0), (5,1,0), (1,3,0), (1,4,0), (2,4,0), (2,5,0)])
     nx.draw(graph, with_labels=True)
     plt.show()
-
-    # TODO: git anlegen
 
     number_of_nodes = graph.number_of_nodes()
     number_of_edges = graph.number_of_edges()
     height = dict.fromkeys(graph.nodes, math.inf)
     roots = []
-    parent_edge = dict.fromkeys(graph.nodes, (math.nan, math.nan))
+    parent_edge = dict.fromkeys(graph.nodes, (math.nan, math.nan, math.nan))
     low_pt = {}
     low_pt_2 = {}
     nesting_depth = {}
@@ -34,10 +34,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-    """
-    list_of_edges = list(graph.edges)
-    list_of_nodes = list(graph.nodes)
-    a = nx.dfs_edges(graph, list_of_nodes[0])
-    """
