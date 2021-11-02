@@ -32,9 +32,10 @@ def main():
 
     orientate(graph, height, roots, parent_edge, low_pt, low_pt_2, nesting_depth)
     print('nesting depth:', nesting_depth)
-    print(roots)
+    print(parent_edge)
 
-    #test(graph, roots, nesting_depth)
+    test(graph, roots, nesting_depth, parent_edge, low_pt, low_pt_2, height)
+
 
 if __name__ == "__main__":
     main()
