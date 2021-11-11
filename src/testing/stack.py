@@ -9,8 +9,11 @@ class Stack:
         self.amount += 1
 
     def pop(self):
-        self.amount -= 1
-        return self.elements.pop()
+        if self.is_empty():
+            return None
+        else:
+            self.amount -= 1
+            return self.elements.pop()
 
     def is_empty(self):
         return self.amount == 0

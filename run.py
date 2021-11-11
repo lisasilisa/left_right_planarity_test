@@ -24,6 +24,7 @@ def main():
     low_pt = {}
     low_pt_2 = {}
     nesting_depth = {}
+    ref = {}
     if number_of_edges > 3 * number_of_nodes - 6:
         print('NOT PLANAR')
         sys.exit()
@@ -34,7 +35,7 @@ def main():
     print('nesting depth:', nesting_depth)
     print(parent_edge)
 
-    test(graph, roots, nesting_depth, parent_edge, low_pt, low_pt_2, height)
+    test(graph, roots, nesting_depth, parent_edge, low_pt, low_pt_2, height, ref)
 
 
 if __name__ == "__main__":
