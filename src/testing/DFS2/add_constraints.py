@@ -1,28 +1,31 @@
 import math
-from src.testing.DFS2.helpers import *
 import sys
+from src.testing.DFS2.helpers import *
 
 
 def add_constraints(e_i, e, stack, stack_bottom, low_pt, low_pt_edge, ref):
     P = [[(math.nan, math.nan, math.nan), (math.nan, math.nan, math.nan)], [(math.nan, math.nan, math.nan), (math.nan,
-                                                                                                             math.nan,
+                                                                                                         math.nan,
                                                                                                              math.nan)]]
     while True:
         Q = stack.pop()
-        if not check_for_nan_side(Q[0]):
+        if not check_for_nan_stack_side(Q[0]):
             Q[0], Q[1] = Q[1], Q[0]
-        if not check_for_nan_side(Q[0]):
+        if not check_for_nan_stack_side(Q[0]):
             print('NOT PLANAR')
             sys.exit()
         else:
             if low_pt[Q[1][0]] > low_pt[e]:
-                if check_for_nan_side(P[1]):
+                if check_for_nan_stack_side(P[1]):
                     P[1][1] = Q[1][1]
                 else:
                     ref[P[1][0]] = Q[1][1]
                 P[1][0] = Q[1][0]
             else:
+                print('make consistent')
                 ref[Q[1][0]] = low_pt_edge[e]
+                print(Q[1][0])
+
 
         if stack.top() == stack_bottom[e_i]:
             break
@@ -38,11 +41,11 @@ def add_constraints(e_i, e, stack, stack_bottom, low_pt, low_pt_edge, ref):
             ref[P[1][0]] = Q[1][1]
             if not check_for_nan_tuple(Q[1][0]):
                 P[1][0] = Q[1][0]
-        if check_for_nan_side(P[0]):
+        if check_for_nan_stack_side(P[0]):
             P[0][1] = Q[0][1]
         else:
             ref[P[0][0]] = Q[0][1]
         P[0][0] = Q[0][0]
 
-    if not (check_for_nan_side(P[0]) and check_for_nan_side(P[1])):
+    if not check_for_nan_stack(P):
         stack.push(P)
