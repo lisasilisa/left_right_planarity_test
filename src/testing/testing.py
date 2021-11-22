@@ -5,7 +5,6 @@ from src.testing.stack import Stack
 
 def test(graph, roots, nesting_depth, parent_edge, low_pt, low_pt_2, height, ref, side):
     sorted_adj_lists = sort_adj_lists(graph, nesting_depth)
-    print(sorted_adj_lists)
     stack_bottom = {}
     stack = Stack()
     low_pt_edge = {}

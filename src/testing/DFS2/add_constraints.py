@@ -22,9 +22,9 @@ def add_constraints(e_i, e, stack, stack_bottom, low_pt, low_pt_edge, ref):
                     ref[P[1][0]] = Q[1][1]
                 P[1][0] = Q[1][0]
             else:
-                print('make consistent')
+                # print('make consistent')
                 ref[Q[1][0]] = low_pt_edge[e]
-                print(Q[1][0])
+                # print(Q[1][0])
 
 
         if stack.top() == stack_bottom[e_i]:
