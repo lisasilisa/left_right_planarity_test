@@ -39,13 +39,8 @@ def run(graph):
     right_ref = {}
     planar = True
 
-    if number_of_edges > 3 * number_of_nodes - 6:
-        #print('NOT PLANAR')
+    if number_of_nodes >= 3 and number_of_edges > 3 * number_of_nodes - 6:
         planar = False
-        #print('planar:', planar)
-        #return planar
-        #else:
-        #print('PLANAR')
     else:
         orientate(graph, height, roots, parent_edge, low_pt, low_pt_2, nesting_depth)
 
@@ -53,7 +48,6 @@ def run(graph):
         side = dict.fromkeys(nesting_depth, 1)
 
         planar = test(graph, roots, nesting_depth, parent_edge, low_pt, low_pt_2, height, ref, side) # planar = # planar,
-        #print('planar:', planar)
         print('ref', ref)
 
         final_adj_list = embed(graph, roots, nesting_depth, parent_edge, ref, side, left_ref, right_ref)
