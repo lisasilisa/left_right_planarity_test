@@ -5,21 +5,36 @@ import numpy as np
 from run import *
 
 
+def callback(self, inp):
+    if inp.isdigit():
+        print(inp)
+        return True
+    # change input of (column, row)
+
+
 class AdjMatrix(tk.Frame):
     def __init__(self, parent, n):
         tk.Frame.__init__(self, parent)
         self.entry = {}
         self.rows = n
         self.columns = n
+        self.entered_number = 0
         for row in range(self.rows):
             for column in range(self.columns):
                 index = (row, column)
-                e = tk.Entry(self)
-                e.grid(row=row, column=column)
+
                 if row == column:
-                    e.insert(0, '1')
-                else:
+                    e = tk.Entry(self, name=str(row)+','+str(column), justify='center')
                     e.insert(0, '0')
+                    e.config(state='disabled')
+                elif row > column:
+                    e = tk.Entry(self, name=str(row)+','+str(column), justify='center')
+                    e.config(state='disabled')
+                else:
+                    reg = self.register(self.callback)
+                    e = tk.Entry(self, name=str(row)+','+str(column), justify='center', validate="key", validatecommand=(reg, '%P', '%W'))
+
+                e.grid(row=row, column=column)
                 self.entry[index] = e
 
     def get(self):
@@ -28,9 +43,48 @@ class AdjMatrix(tk.Frame):
             current_row = []
             for column in range(self.columns):
                 index = (row, column)
-                current_row.append(int(self.entry[index].get()))
+
+                try:
+                    val = int(self.entry[index].get())
+                except ValueError:
+                    # warn widget
+                    val = 0
+                current_row.append(val)
             result.append(current_row)
         return result
+
+    # def set(self, num, row, col):
+
+    def callback(self, inp, name):
+        if not inp:  # the field is being cleared
+            self.entered_number = 0
+            return True
+
+        if inp == '0' or inp == '1':
+            inp = int(inp)
+            self.entered_number = inp
+            i = tuple(map(int, (name.split(".")[-1]).split(',')))
+            list_i = list(i)
+            list_i[0], list_i[1] = list_i[1], list_i[0]
+            ir = tuple(list_i)
+            self.entry[ir].config(state='normal')
+            self.entry[ir].delete(0, 'end')
+            self.entry[ir].insert(0, self.entered_number)
+            self.entry[ir].config(state='disabled')
+            return True
+        else:
+            # warn widget
+            return False
+
+        """
+        try:
+            self.entered_number = int(inp)
+            print(self.entered_number)
+            return True
+
+        except ValueError:
+            return False
+        """
 
 
 def create_adj_matrix():
@@ -67,8 +121,9 @@ def show_read_in_matrix():
     file = askopenfile(parent=frame, mode='rb', title='Choose a file', filetype=[("Csv File", "*.csv")])
     if file:
         adj_matrix_array = np.genfromtxt(file, delimiter=',')
+        # check if matrix is symmetric, contains only 0 and 1 and just 0 at the diagonal
+        print(adj_matrix_array)
         planarity_test_1(adj_matrix_array)
-
 
 
 root = tk.Tk()
