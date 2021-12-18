@@ -4,12 +4,12 @@ from tkinter.filedialog import askopenfile
 import numpy as np
 from run import *
 
-
+"""
 def callback(self, inp):
     if inp.isdigit():
-        print(inp)
         return True
     # change input of (column, row)
+"""
 
 
 class AdjMatrix(tk.Frame):
@@ -24,15 +24,16 @@ class AdjMatrix(tk.Frame):
                 index = (row, column)
 
                 if row == column:
-                    e = tk.Entry(self, name=str(row)+','+str(column), justify='center')
+                    e = tk.Entry(self, name=str(row) + ',' + str(column), justify='center', width=8)
                     e.insert(0, '0')
                     e.config(state='disabled')
                 elif row > column:
-                    e = tk.Entry(self, name=str(row)+','+str(column), justify='center')
+                    e = tk.Entry(self, name=str(row) + ',' + str(column), justify='center', width=8)
                     e.config(state='disabled')
                 else:
                     reg = self.register(self.callback)
-                    e = tk.Entry(self, name=str(row)+','+str(column), justify='center', validate="key", validatecommand=(reg, '%P', '%W'))
+                    e = tk.Entry(self, name=str(row) + ',' + str(column), justify='center', validate="key",
+                                 validatecommand=(reg, '%P', '%W'), width=8)
 
                 e.grid(row=row, column=column)
                 self.entry[index] = e
@@ -76,81 +77,135 @@ class AdjMatrix(tk.Frame):
             # warn widget
             return False
 
-        """
-        try:
-            self.entered_number = int(inp)
-            print(self.entered_number)
-            return True
-
-        except ValueError:
-            return False
-        """
-
 
 def create_adj_matrix():
+    frame2.grid_remove()
     global matrix
-    n = int(e1.get())
-    matrix.grid_remove()
-    matrix = AdjMatrix(frame1, n)
-    b2 = tk.Button(frame1, text='Planarity Test', command=lambda: planarity_test())
-    matrix.grid(row=1, column=0, columnspan=3)
-    b2.grid(row=2, column=1)
+    n = int(e111.get())
+    if -1 < n < 13:
+        matrix.grid_remove()
+        matrix = AdjMatrix(frame12, n)
+        b121 = tk.Button(frame12, text='Planarity Test', command=lambda: convert_adj_matrix_to_np_array())
+        matrix.grid(row=0, column=0, columnspan=3)
+        b121.grid(row=1, column=1)
+        frame12.grid(row=1, column=0)
+    else:
+        pass
 
 
+def planar_test(adj_matrix_array):
+    graph = nx.from_numpy_array(adj_matrix_array, parallel_edges=True, create_using=nx.MultiGraph)
+    planar = run(graph)
+    if planar:
+        planar_text = "Your entered graph is planar.\n"
+    else:
+        planar_text = "Your entered graph is not planar.\n"
+    msg = tk.Message(frame2, text=planar_text)
+    msg.grid(row=0, column=0)
+    frame2.grid(row=2, column=0)
 
-def planarity_test():
+
+def convert_adj_matrix_to_np_array():
     adj_matrix = matrix.get()
     adj_matrix_array = np.array(adj_matrix)
-    graph = nx.from_numpy_array(adj_matrix_array, parallel_edges=True, create_using=nx.MultiGraph)
-    planar = run(graph)
-    print('planar', planar)
-
-
-def planarity_test_1(adj_matrix_array):
-    graph = nx.from_numpy_array(adj_matrix_array, parallel_edges=True, create_using=nx.MultiGraph)
-    planar = run(graph)
-    print('planar', planar)
+    planar_test(adj_matrix_array)
 
 
 def show_enter_matrix():
+    frame1a.grid_remove()
+    frame12.grid_remove()
+    frame2.grid_remove()
     frame1.grid(row=1, column=0)
+    if e111.get() != '0':
+        print(e111.get())
+        e111.delete(0, 'end')
+        e111.insert(0, '0')
+
+
+def symmetric(a, rtol=1e-05, atol=1e-08):
+    return np.allclose(a, a.T, rtol=rtol, atol=atol)
+
+
+def check_correct_matrix_format(adj_matrix_array):
+    if adj_matrix_array.shape[0] != adj_matrix_array.shape[1]:
+        return False
+    elif not np.all((adj_matrix_array == 0) | (adj_matrix_array == 1)):
+        return False
+    elif not symmetric(adj_matrix_array):
+        return False
+    elif not np.all(adj_matrix_array.diagonal() == 0):
+        return False
+    else:
+        return True
 
 
 def show_read_in_matrix():
     frame1.grid_remove()
+    frame2.grid_remove()
     file = askopenfile(parent=frame, mode='rb', title='Choose a file', filetype=[("Csv File", "*.csv")])
     if file:
         adj_matrix_array = np.genfromtxt(file, delimiter=',')
-        # check if matrix is symmetric, contains only 0 and 1 and just 0 at the diagonal
-        print(adj_matrix_array)
-        planarity_test_1(adj_matrix_array)
+        if check_correct_matrix_format(adj_matrix_array):
+            print(adj_matrix_array.shape)
+            print(type(adj_matrix_array))
+            b1a1 = tk.Button(frame1a, text='Planarity Test', command=lambda: planar_test(adj_matrix_array))
+            b1a1.grid(row=0, column=0)
+            frame1a.grid(row=1, column=0)
+        else:
+            pass
+            # warn signal
 
 
 root = tk.Tk()
 
-frame = tk.Frame(root, width=600, height=600, padx=20, pady=20)
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.geometry("%dx%d" % (width, height))
+
+frame = tk.Frame(root, padx=20)  # , bg='red', pady=20,width=600, height=600,
+
+frame01 = tk.Frame(frame, padx=20)  # , bg='orange'
 logo = Image.open('logo1.jpg')
 logo = ImageTk.PhotoImage(logo)
-logo_label = tk.Label(frame, image=logo, bd=0)
+logo_label = tk.Label(frame01, image=logo, bd=0)
 logo_label.image = logo
 logo_label.grid(row=0, column=0, columnspan=2)
-b1 = tk.Button(frame, text='enter matrix', bg='#D7D7D7', command=lambda: show_enter_matrix())
-b2 = tk.Button(frame, text='read in matrix', bg='#D7D7D7', command=lambda: show_read_in_matrix())
-b1.grid(row=1, column=0)
-b2.grid(row=1, column=1)
+b011 = tk.Button(frame01, text='Enter matrix', bg='#D7D7D7', command=lambda: show_enter_matrix())
+b012 = tk.Button(frame01, text='Read in matrix', bg='#D7D7D7', command=lambda: show_read_in_matrix())
+b011.grid(row=1, column=0)
+b012.grid(row=1, column=1)
+frame01.grid(row=0, column=0)
 frame.grid(row=0, column=0)
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(0, weight=1)
+"""
+frame.grid_rowconfigure(0, weight=1)
+frame.grid_rowconfigure(1, weight=1)
+frame.grid_columnconfigure(0, weight=1)
+frame.grid_columnconfigure(1, weight=1)
+"""
 
-frame1 = tk.Frame(root, width=600, height=600, padx=20, pady=20)
-l1 = tk.Label(frame1, text='Number of nodes')
-e1 = tk.Entry(frame1, justify='center')
-e1.insert(0, '0')
+frame1 = tk.Frame(root)  # , bg='blue', width=600, height=600, pady=20,
+frame11 = tk.Frame(frame1, padx=20)  # , bg='grey', pady=20, width=600, height=600,
+l111 = tk.Label(frame11, text='Number of nodes')
+e111 = tk.Entry(frame11, justify='center', width=12)
+e111.insert(0, '0')
+matrix = AdjMatrix(frame11, 0)
+b111 = tk.Button(frame11, text='Create Matrix', bg='#D7D7D7', command=lambda: create_adj_matrix())
+l111.grid(row=0, column=0)
+e111.grid(row=0, column=1)
+b111.grid(row=0, column=2, padx=10)
+frame11.grid(row=0, column=0)
 
-matrix = AdjMatrix(frame1, 0)
-b11 = tk.Button(frame1, text='Create Matrix', bg='#D7D7D7', command=lambda: create_adj_matrix())
-l1.grid(row=0, column=0)
-e1.grid(row=0, column=1)
-b11.grid(row=0, column=2, padx=10)
+frame12 = tk.Frame(frame1)
+frame12.grid(row=1, column=0)
+
+frame1a = tk.Frame(root, padx=20)
+root.grid_rowconfigure(1, weight=1)
+
+frame2 = tk.Frame(root, width=600, height=100, padx=20)  # , bg='yellow', pady=20,
+root.grid_rowconfigure(2, weight=1)
 
 root.mainloop()
 
-#run()
+# run()
