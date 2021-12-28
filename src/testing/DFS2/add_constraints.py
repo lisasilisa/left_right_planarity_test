@@ -4,9 +4,8 @@ from src.testing.DFS2.helpers import *
 
 
 def add_constraints(e_i, e, stack, stack_bottom, low_pt, low_pt_edge, ref): # planar,
-    P = [[(math.nan, math.nan, math.nan), (math.nan, math.nan, math.nan)], [(math.nan, math.nan, math.nan), (math.nan,
-                                                                                                         math.nan,
-                                                                                                             math.nan)]]
+    P = [[(math.nan, math.nan), (math.nan, math.nan)], [(math.nan, math.nan), (math.nan, math.nan)]]  # jeweils ein math.nan weggenommen
+
     while True:
         Q = stack.pop()
         if not check_for_nan_stack_side(Q[0]):
