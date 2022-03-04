@@ -93,6 +93,7 @@ def create_adj_matrix():
 
 
 def planar_test(adj_matrix_array):
+    print(adj_matrix_array)
     graph = nx.from_numpy_array(adj_matrix_array) #, parallel_edges=True, create_using=nx.MultiGraph
     print(graph)
     planar = run(graph)
@@ -100,6 +101,7 @@ def planar_test(adj_matrix_array):
         txt.set("Your entered graph is planar.\n")
     else:
         txt.set("Your entered graph is not planar.\n")
+
     msg.grid(row=0, column=0)
     frame2.grid(row=2, column=0)
 
