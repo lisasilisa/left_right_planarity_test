@@ -33,7 +33,7 @@ def draw_bezier_curves(graph, ax, final_adj_list, sorted_tree_edges, parent_edge
                 find_relevant_nodes(back_edge, sorted_tree_edges, target_node, parent_edge, final_adj_list,
                                     relevant_nodes,
                                     side[back_edge])
-                print('relevant_nodes', relevant_nodes)
+                #print('relevant_nodes', relevant_nodes)
 
                 # wenn Rückkante von einem Blatt startet
                 if is_leaf(back_edge[0], sorted_tree_edges):
@@ -41,7 +41,7 @@ def draw_bezier_curves(graph, ax, final_adj_list, sorted_tree_edges, parent_edge
                                                             sorted_tree_edges, height, side[back_edge], True)
 
                 else:
-                    bezier_coords = determine_bezier_points(graph, back_edge, relevant_nodes,parent_edge, final_adj_list,
+                    bezier_coords = determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, final_adj_list,
                                                             sorted_tree_edges, height, side[back_edge], False)
                 nodes = np.asfortranarray(bezier_coords)
                 curve = bezier.Curve(nodes, degree=len(bezier_coords[0]) - 1)
