@@ -35,11 +35,12 @@ def draw_bezier_curves(graph, ax, final_adj_list, sorted_tree_edges, parent_edge
                                     side[back_edge])
                 #print('relevant_nodes', relevant_nodes)
 
-                # wenn Rückkante von einem Blatt startet
+                # wenn Rückkante von einem Blatt startet: Flag leaf = True
                 if is_leaf(back_edge[0], sorted_tree_edges):
                     bezier_coords = determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, final_adj_list,
                                                             sorted_tree_edges, height, side[back_edge], True)
 
+                # wenn Rückkante von keinem Blatt startet: Flag leaf = False
                 else:
                     bezier_coords = determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, final_adj_list,
                                                             sorted_tree_edges, height, side[back_edge], False)

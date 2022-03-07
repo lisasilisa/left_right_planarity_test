@@ -16,8 +16,8 @@ def bezier_point_for_no_relevant_nodes(bezier_coords, start, end, position, side
     intercept = midpoint_y - (new_gradient * midpoint_x)
 
     if side == 1:
-        bezier_coords[0].append(midpoint_x + (0.2 * hdc))
-        bezier_coords[1].append(new_gradient * (midpoint_x + (0.2 * hdc)) + intercept)
+        bezier_coords[0].append(midpoint_x + (0.35 * hdc))
+        bezier_coords[1].append(new_gradient * (midpoint_x + (0.35 * hdc)) + intercept)
     elif side == -1:
-        bezier_coords[0].append(midpoint_x - (0.2 * hdc))
-        bezier_coords[1].append(new_gradient * (midpoint_x - (0.2 * hdc)) + intercept)
+        bezier_coords[0].append(midpoint_x - (0.35 * hdc))
+        bezier_coords[1].append(new_gradient * (midpoint_x - (0.35 * hdc)) + intercept)

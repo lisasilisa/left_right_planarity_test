@@ -92,18 +92,29 @@ def create_adj_matrix():
         pass
 
 
+def visualize_the_graph(final_adj_list, parent_edge, height, side):
+    visualize(final_adj_list, parent_edge, height, side)
+
+
 def planar_test(adj_matrix_array):
     print(adj_matrix_array)
     graph = nx.from_numpy_array(adj_matrix_array) #, parallel_edges=True, create_using=nx.MultiGraph
     print(graph)
-    planar = run(graph)
+    planar, parameter_list = run(graph)
+
     if planar:
         txt.set("Your entered graph is planar.\n")
+        msg.grid(row=0, column=0, padx=10)
+        b21 = tk.Button(frame2, text='Visualize Graph', bg='#D7D7D7',
+                        command=lambda: visualize_the_graph(parameter_list[0], parameter_list[1], parameter_list[2], parameter_list[3])) #final_adj_list, parent_edge, height, side
+        b21.grid(row=0, column=1, padx=10)
+
     else:
         txt.set("Your entered graph is not planar.\n")
+        msg.grid(row=0, column=0, padx=10)
 
-    msg.grid(row=0, column=0)
     frame2.grid(row=2, column=0)
+
 
 
 def convert_adj_matrix_to_np_array():
@@ -163,9 +174,9 @@ width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
 root.geometry("%dx%d" % (width, height))
 
-frame = tk.Frame(root, padx=20, bg='red')  # , pady=20,width=600, height=600,
+frame = tk.Frame(root, padx=20)  # , pady=20,width=600, height=600, , bg='red'
 
-frame01 = tk.Frame(frame, padx=20, bg='orange')  #
+frame01 = tk.Frame(frame, padx=20)  #, bg='orange'
 logo = Image.open('logo1.jpg')
 logo = ImageTk.PhotoImage(logo)
 logo_label = tk.Label(frame01, image=logo, bd=0)
@@ -186,10 +197,9 @@ frame.grid_columnconfigure(0, weight=1)
 frame.grid_columnconfigure(1, weight=1)
 """
 
-frame1 = tk.Frame(root, bg='blue')  # , bg='blue', width=600, height=600, pady=20,
+frame1 = tk.Frame(root)  # , bg='blue'         , width=600, height=600, pady=20,
 
-
-frame11 = tk.Frame(frame1, padx=20, bg='grey')  # , pady=20, width=600, height=600,
+frame11 = tk.Frame(frame1, padx=20)  # , pady=20, width=600, height=600,, bg='grey'
 l111 = tk.Label(frame11, text='Number of nodes')
 e111 = tk.Entry(frame11, justify='center', width=12)
 e111.insert(0, '0')
@@ -201,13 +211,13 @@ b111.grid(row=0, column=2, padx=10)
 frame11.grid(row=0, column=0)
 
 # Planarity Test Button
-frame12 = tk.Frame(frame1, bg='red')
+frame12 = tk.Frame(frame1) #, bg='red'
 frame12.grid(row=1, column=0)
 
-frame1a = tk.Frame(root, padx=20, bg='purple')
+frame1a = tk.Frame(root, padx=20) #, bg='purple'
 root.grid_rowconfigure(1, weight=1)
 
-frame2 = tk.Frame(root, padx=20, bg='yellow')  # , pady=20, , width=600, height=100,
+frame2 = tk.Frame(root, padx=20)  # , pady=20, , width=600, height=100, , bg='yellow'
 txt = tk.StringVar(frame2)
 msg = tk.Message(frame2, textvariable=txt)
 
