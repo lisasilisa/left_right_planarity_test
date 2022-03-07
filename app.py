@@ -4,13 +4,6 @@ from tkinter.filedialog import askopenfile
 import numpy as np
 from run import *
 
-"""
-def callback(self, inp):
-    if inp.isdigit():
-        return True
-    # change input of (column, row)
-"""
-
 
 class AdjMatrix(tk.Frame):
     def __init__(self, parent, n):
@@ -53,8 +46,19 @@ class AdjMatrix(tk.Frame):
             result.append(current_row)
         return result
 
-    # def set(self, num, row, col):
+    def set(self, numpy_array):
+        matrix_list = numpy_array.tolist()
+        for row in range(len(matrix_list)):
+            for column in range(len(matrix_list[row])):
+                e = tk.Entry(self, name=str(row) + ',' + str(column), justify='center', width=8)
 
+                self.entry[(row, column)].insert(0, int(matrix_list[row][column]))
+                self.entry[(row, column)].config(state='disabled')
+
+                e.grid(row=row, column=column)
+                self.entry[(row, column)] = e
+
+    # untere Diagonalmatrix automatisch ausfüllen
     def callback(self, inp, name):
         if not inp:  # the field is being cleared
             self.entered_number = 0
@@ -98,7 +102,7 @@ def visualize_the_graph(final_adj_list, parent_edge, height, side):
 
 def planar_test(adj_matrix_array):
     print(adj_matrix_array)
-    graph = nx.from_numpy_array(adj_matrix_array) #, parallel_edges=True, create_using=nx.MultiGraph
+    graph = nx.from_numpy_array(adj_matrix_array)  # , parallel_edges=True, create_using=nx.MultiGraph
     print(graph)
     planar, parameter_list = run(graph)
 
@@ -106,7 +110,9 @@ def planar_test(adj_matrix_array):
         txt.set("Your entered graph is planar.\n")
         msg.grid(row=0, column=0, padx=10)
         b21 = tk.Button(frame2, text='Visualize Graph', bg='#D7D7D7',
-                        command=lambda: visualize_the_graph(parameter_list[0], parameter_list[1], parameter_list[2], parameter_list[3])) #final_adj_list, parent_edge, height, side
+                        command=lambda: visualize_the_graph(parameter_list[0], parameter_list[1], parameter_list[2],
+                                                            parameter_list[
+                                                                3]))  # final_adj_list, parent_edge, height, side
         b21.grid(row=0, column=1, padx=10)
 
     else:
@@ -114,7 +120,6 @@ def planar_test(adj_matrix_array):
         msg.grid(row=0, column=0, padx=10)
 
     frame2.grid(row=2, column=0)
-
 
 
 def convert_adj_matrix_to_np_array():
@@ -154,18 +159,28 @@ def check_correct_matrix_format(adj_matrix_array):
 def show_read_in_matrix():
     frame1.grid_remove()
     frame2.grid_remove()
+    frame1a.grid_remove()
     file = askopenfile(parent=frame, mode='rb', title='Choose a file', filetype=[("Csv File", "*.csv")])
     if file:
         adj_matrix_array = np.genfromtxt(file, delimiter=',')
         if check_correct_matrix_format(adj_matrix_array):
             print(adj_matrix_array.shape)
             print(type(adj_matrix_array))
-            b1a1 = tk.Button(frame1a, text='Planarity Test', command=lambda: planar_test(adj_matrix_array))
-            b1a1.grid(row=0, column=0)
-            frame1a.grid(row=1, column=0)
-        else:
-            pass
-            # warn signal
+            # filled in Matrix
+
+            global matrixa
+            n = adj_matrix_array.shape[0]
+
+            if -1 < n < 13:
+                matrixa.grid_remove()
+                matrixa = AdjMatrix(frame1a, n)
+                matrixa.set(adj_matrix_array)
+                b1a1 = tk.Button(frame1a, text='Planarity Test', command=lambda: planar_test(adj_matrix_array))
+                matrixa.grid(row=0, column=0, columnspan=3)
+                b1a1.grid(row=1, column=1)
+                frame1a.grid(row=1, column=0)
+            else:
+                pass
 
 
 root = tk.Tk()
@@ -176,7 +191,7 @@ root.geometry("%dx%d" % (width, height))
 
 frame = tk.Frame(root, padx=20)  # , pady=20,width=600, height=600, , bg='red'
 
-frame01 = tk.Frame(frame, padx=20)  #, bg='orange'
+frame01 = tk.Frame(frame, padx=20)  # , bg='orange'
 logo = Image.open('logo1.jpg')
 logo = ImageTk.PhotoImage(logo)
 logo_label = tk.Label(frame01, image=logo, bd=0)
@@ -211,10 +226,12 @@ b111.grid(row=0, column=2, padx=10)
 frame11.grid(row=0, column=0)
 
 # Planarity Test Button
-frame12 = tk.Frame(frame1) #, bg='red'
+frame12 = tk.Frame(frame1)  # , bg='red'
 frame12.grid(row=1, column=0)
 
-frame1a = tk.Frame(root, padx=20) #, bg='purple'
+frame1a = tk.Frame(root, padx=20)  # frame1a ist der alternative frame1 für das einlesen einer Matrix (2. Seite)
+matrixa = AdjMatrix(frame1a, 0)
+
 root.grid_rowconfigure(1, weight=1)
 
 frame2 = tk.Frame(root, padx=20)  # , pady=20, , width=600, height=100, , bg='yellow'
