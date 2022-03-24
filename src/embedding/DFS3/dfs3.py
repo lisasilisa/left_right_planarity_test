@@ -8,7 +8,8 @@ def dfs3(v, sorted_adj_list, final_adj_list, parent_edge, left_ref, right_ref, s
             final_adj_list[w].insert(0, e_i)
             left_ref[v] = e_i
             right_ref[v] = e_i
-            dfs3(w, sorted_adj_list, final_adj_list, parent_edge, left_ref, right_ref, side)
+            dfs3(w, sorted_adj_list, final_adj_list,
+                 parent_edge, left_ref, right_ref, side)
         else:
             tmp_list = copy.deepcopy(final_adj_list[w])
             if side[e_i] == 1:

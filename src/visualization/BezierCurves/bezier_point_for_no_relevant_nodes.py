@@ -1,7 +1,5 @@
 def bezier_point_for_no_relevant_nodes(bezier_coords, start, end, position, side, hdc):
 
-    #print('no_relevant_nodes')
-    print('no relevant nodes side', side)
     x1 = position[start][0]
     y1 = position[start][1]
     x2 = position[end][0]

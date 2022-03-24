@@ -26,14 +26,11 @@ def draw_bezier_curves(graph, ax, final_adj_list, sorted_tree_edges, parent_edge
     for node in list(graph.nodes):
         for back_edge in final_adj_list[node]:
             if back_edge not in sorted_tree_edges[back_edge[0]] and back_edge[0] == node:
-
-                print('back edge', back_edge)
                 target_node = back_edge[1]
                 relevant_nodes = []
                 find_relevant_nodes(back_edge, sorted_tree_edges, target_node, parent_edge, final_adj_list,
                                     relevant_nodes,
                                     side[back_edge])
-                #print('relevant_nodes', relevant_nodes)
 
                 # wenn Rückkante von einem Blatt startet: Flag leaf = True
                 if is_leaf(back_edge[0], sorted_tree_edges):

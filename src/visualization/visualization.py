@@ -14,20 +14,13 @@ from src.visualization.BezierCurves.draw_bezier_curves import *
 
 def visualize(final_adj_list, parent_edge, height, side):
     graph = nx.DiGraph()
-
-    #ax = plt.axes()
-    # limits = plt.axis('on')  # turns on axis
-    # ax.tick_params(left=True, bottom=True, labelleft=True, labelbottom=True)
     fig, ax = plt.subplots()
 
     sorted_tree_edges = get_dfs_tree_edges(final_adj_list, parent_edge)
-    #print('sorted_tree_edges', sorted_tree_edges)
 
     wedge = {0: 180}
     angle = {0: 0}
     set_angle_and_wedge(sorted_tree_edges, 0, wedge, angle)
-    #print('wedge', wedge)
-    #print('angle', angle)
 
     coord = {0: (0, 0)}
     graph.add_node(0, pos=coord[0])
