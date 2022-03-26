@@ -9,7 +9,6 @@ def add_subtree_leafes(node, sorted_tree_edges, relevant_nodes, side):
     # wenn Liste leer, dann Blattknoten zu relevant_nodes hinzufügen
     if not sorted_tree_edges[node]:
         relevant_nodes.append(node)
-        # print('relevant nodes', relevant_nodes)
 
     if side == 1:
         for edge in sorted_tree_edges[node]:

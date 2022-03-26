@@ -3,7 +3,7 @@ from src.visualization.BezierCurves.bezier_point_for_no_relevant_nodes import *
 from src.visualization.BezierCurves.helpers import *
 
 
-def determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, final_adj_list, sorted_tree_edges, height,
+def determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, height,
                             side, leaf):
 
     position = nx.get_node_attributes(graph, 'pos')
@@ -42,7 +42,6 @@ def determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, final
                 bezier_coords[0].append(xcoord)
                 bezier_coords[1].append(ycoord)
                 counter = counter + 2.5
-
         else:
             counter = 5
             for rn in relevant_nodes:

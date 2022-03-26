@@ -9,7 +9,7 @@ def find_relevant_nodes(edge, sorted_tree_edges, target_node, parent_edge, final
     adj_list = final_adj_list[edge[0]]
 
     if side == 1:
-        for e in adj_list[adj_list.index(edge) + 1:]:
+        for e in adj_list[adj_list.index(edge)+1:]:
             if is_tree_edge_in_adj_list(e, sorted_tree_edges, edge[0]):
                 add_subtree_leafes(e[1], sorted_tree_edges, relevant_nodes, side)
 
