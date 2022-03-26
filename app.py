@@ -112,6 +112,8 @@ def planar_test(adj_matrix_array):
     planar, parameter_list = run(graph)
 
     if planar:
+        global b21
+        b21.grid_remove()
         txt.set("Your entered graph is planar.\n")
         msg.grid(row=0, column=0, padx=10)
         b21 = tk.Button(frame2, text='Visualize Graph', bg='#D7D7D7',
@@ -121,6 +123,7 @@ def planar_test(adj_matrix_array):
         b21.grid(row=0, column=1, padx=10)
 
     else:
+        b21.grid_remove()
         txt.set("Your entered graph is not planar.\n")
         msg.grid(row=0, column=0, padx=10)
 
@@ -159,7 +162,7 @@ def show_read_in_matrix():
     frame2.grid_remove()
     frame1a.grid_remove()
     file = askopenfile(parent=frame0, mode='rb', title='Choose a file',
-                       filetype=[("Csv File", "*.csv")])
+                       filetypes=[("Csv File", "*.csv")])
     if file:
         adj_matrix_array = np.genfromtxt(file, delimiter=',')
         if check_correct_matrix_format(adj_matrix_array):
@@ -233,7 +236,7 @@ root.grid_rowconfigure(1, weight=1)
 frame2 = tk.Frame(root, padx=20)  #
 txt = tk.StringVar(frame2)
 msg = tk.Message(frame2, textvariable=txt)
-
+b21 = tk.Button()
 root.grid_rowconfigure(2, weight=1)
 
 root.mainloop()

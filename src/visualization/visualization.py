@@ -17,7 +17,6 @@ def visualize(final_adj_list, parent_edge, height, side):
     fig, ax = plt.subplots()
 
     sorted_tree_edges = get_dfs_tree_edges(final_adj_list, parent_edge)
-    print("sorted_tree_edges", sorted_tree_edges)
     wedge = {0: 180}
     angle = {0: 0}
     set_angle_and_wedge(sorted_tree_edges, 0, wedge, angle)

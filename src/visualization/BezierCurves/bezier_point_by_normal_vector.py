@@ -1,4 +1,4 @@
-def bezier_point_for_no_relevant_nodes(bezier_coords, start, end, position, side, hdc):
+def bezier_point_by_normal_vector(bezier_coords, start, end, position, side, hdc):
 
     x1 = position[start][0]
     y1 = position[start][1]

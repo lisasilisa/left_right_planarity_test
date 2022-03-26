@@ -3,8 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import ctypes
 
-#bezier = ctypes.cdll.LoadLibrary(
-#    r"C:\Users\lisas\anaconda3\envs\Studienprojekt\Lib\site-packages\bezier\extra-dll\bezier-2a44d276.dll")
+bezier = ctypes.cdll.LoadLibrary(
+    r"C:\Users\lisas\anaconda3\envs\Studienprojekt\Lib\site-packages\bezier\extra-dll\bezier-2a44d276.dll")
+
 import bezier
 
 from src.visualization.BezierCurves.find_relevant_nodes import *

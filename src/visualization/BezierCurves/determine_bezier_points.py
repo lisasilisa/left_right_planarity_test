@@ -1,6 +1,6 @@
 import networkx as nx
-from src.visualization.BezierCurves.bezier_point_for_no_relevant_nodes import *
-from src.visualization.BezierCurves.helpers import *
+from src.visualization.BezierCurves.bezier_point_by_normal_vector import *
+
 
 
 def determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, height,
@@ -22,12 +22,12 @@ def determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, heigh
         # wenn es gar keinen relevant node gibt, braucht man aber trotzdem eine kleine
         # Verschiebung der Rückkante, sodass Rückkante nicht auf DFS Kanten liegt
         # hdc am geringsten gewertet, da diese Backedeges sich meistens weiter innen befinden
-        bezier_point_for_no_relevant_nodes(bezier_coords, back_edge[0], back_edge[1], position, side, hdc3)
+        bezier_point_by_normal_vector(bezier_coords, back_edge[0], back_edge[1], position, side, hdc3)
     else:
         if not leaf:
             # wenn man nicht bei einem Blatt beginnt, dann Bogen von Start der Backedge zum ersten relevant node
             # side*-1 weil Ausrichtung des Normalenvektor genau entgegengesetzt zu Normalenvektor bei Backedges
-            bezier_point_for_no_relevant_nodes(bezier_coords, back_edge[0], relevant_nodes[0], position, side*-1, hdc1)
+            bezier_point_by_normal_vector(bezier_coords, back_edge[0], relevant_nodes[0], position, side*-1, hdc1)
 
             # doppelter Code, da für Backedges die bei keinem Blatt beginnen, andere Parameter gelten sollen
             # da diese Backedges noch eher um andere herum verlaufen müssen, werden height_diff und counter mehr
@@ -55,7 +55,7 @@ def determine_bezier_points(graph, back_edge, relevant_nodes, parent_edge, heigh
                 counter = counter + 1
 
         # für alle Backedges Bogen vom letzten relevant node zum Endpunkt der Backedge
-        bezier_point_for_no_relevant_nodes(bezier_coords, relevant_nodes[-1], back_edge[1], position, side, hdc1)
+        bezier_point_by_normal_vector(bezier_coords, relevant_nodes[-1], back_edge[1], position, side, hdc1)
 
     bezier_coords[0].append(position[back_edge[1]][0])
     bezier_coords[1].append(position[back_edge[1]][1])

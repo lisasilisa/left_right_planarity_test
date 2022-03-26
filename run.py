@@ -43,5 +43,3 @@ def run(graph):
 
     return planar, []
 
-# if __name__ == "__main__":
-#    main()
